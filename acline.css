@@ -1,0 +1,8 @@
+@font-face {
+ font-family: "AC Line";
+ src: local("AC Line"), url("fonts/acline.woff2") format("woff2"),
+  url("fonts/acline.woff") format("woff"),
+  url("fonts/acline.ttf") format("truetype");
+ font-weight: 400;
+ font-style: normal;
+}
