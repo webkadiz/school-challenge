@@ -51,7 +51,9 @@ body {
 }
 
 .map__terminal {
+ display: flex;
  flex: 1;
+ align-items: flex-end
 }
 
 .map__decor {
@@ -62,8 +64,26 @@ body {
  text-align: justify;
 }
 
+.map__char {
+  letter-spacing: -4px;
+}
+
 .map__char:hover {
  color     : #020102;
  background: #13b40d;
  text-align: center;
+}
+
+.map__word{
+  letter-spacing: 0px;
+}
+
+.map__enter-wrapper{
+  display: flex;
+}
+
+.map__enter{
+  margin-left: .3rem;
+  color     : #020102;
+  background: #13b40d;
 }
