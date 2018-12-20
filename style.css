@@ -13,7 +13,8 @@
 }
 
 html {
- font-size: 10px;
+ font-size  : 10px;
+ user-select: none;
 }
 
 html,
@@ -39,6 +40,32 @@ body {
  margin-bottom: 2rem;
 }
 
+.active {
+ color     : #020102;
+ background: #13b40d;
+}
+
+.greeting {
+ line-height: 4rem;
+}
+
+.attempt--wrapper {
+ display    : flex;
+ align-items: center;
+}
+
+.attempt:first-child {
+ margin-left: 2.5rem;
+}
+
+.attempt {
+ width      : 2rem;
+ height     : 2rem;
+ margin-left: 2rem;
+ margin-top : 0.5rem;
+ background : #13b40d;
+}
+
 .map {
  margin-top: 3rem;
  display   : flex;
@@ -51,9 +78,11 @@ body {
 }
 
 .map__terminal {
- display: flex;
- flex: 1;
- align-items: flex-end
+ display        : flex;
+ flex           : 1;
+ align-items    : flex-start;
+ flex-direction : column;
+ justify-content: flex-end;
 }
 
 .map__decor {
@@ -65,7 +94,7 @@ body {
 }
 
 .map__char {
-  letter-spacing: -4px;
+ letter-spacing: -3px;
 }
 
 .map__char:hover {
@@ -74,16 +103,20 @@ body {
  text-align: center;
 }
 
-.map__word{
-  letter-spacing: 0px;
+.map__word {
+ letter-spacing: 0px;
+ cursor        : pointer;
 }
 
-.map__enter-wrapper{
-  display: flex;
+.map__enter-wrapper {
+ display   : flex;
+ margin-top: 1.5rem;
 }
 
-.map__enter{
-  margin-left: .3rem;
-  color     : #020102;
-  background: #13b40d;
+.map__enter {
+ margin-left: 0.3rem;
+}
+
+.map__hint {
+ cursor: pointer;
 }
