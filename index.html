@@ -4,16 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>HACKER</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
-  <link rel="stylesheet" href="anonym.css" />
-  <link rel="stylesheet" href="consola.css" />
-  <link rel="stylesheet" href="acline.css" />
-  <link rel="stylesheet" href="bender.css" />
-  <link rel="stylesheet" href="fontello.css" />
+  <link rel="stylesheet" href="css/bender.css" />
+  <link rel="stylesheet" href="css/fontello.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/nosignal.css" />
  </head>
  <body>
+  <video class="hacker__video" preload>
+   <source src="assets/deadmouse.webm" type="video/webm; codecs=&quot;vp8, vorbis&quot;" />
+   <source src="assets/deadmouse.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;" />
+   <source src="assets/deadmouse.ogv" type="video/ogg; codecs=&quot;theora, vorbis&quot;" />
+   Video tag not supported. Download the video
+  </video>
+  <canvas id="start"></canvas>
+  <div class="bg"></div>
   <div class="wrapper">
    <div class="greeting m4">
     Добро пожаловать в сеть "РОБКО Индастриз(ТМ) <br />
@@ -21,9 +27,21 @@
    </div>
    <div class="attempt--wrapper m4">Осталось попыток:</div>
    <div class="map"></div>
+   <div class="bg-crt"></div>
+  </div>
+  <div class="wrapper__real"></div>
+  <div class="win">
+   <div class="win__left"></div>
+   <div class="win__right"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="main.js"></script>
+  <script src="js/typed.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.4.5/fabric.min.js"></script>
+  <script src="js/fontload.js"></script>
+  <script src="js/ps.js"></script>
+  <script src="js/utilities.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/glitch.js"></script>
  </body>
 </html>
