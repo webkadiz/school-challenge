@@ -11,12 +11,12 @@
  if (typeof exports === "object" && typeof module === "object") module.exports = factory();
  else if (typeof define === "function" && define.amd) define([], factory);
  else if (typeof exports === "object") exports["Typed"] = factory();
- else root["Typed"]                                     = factory();
+ else root["Typed"] = factory();
 })(this, function() {
  return /******/ (function(modules) {
   // webpackBootstrap
   /******/ // The module cache
-  /******/ var installedModules = {};  // The require function
+  /******/ var installedModules = {}; // The require function
   /******/
   /******/ /******/ function __webpack_require__(moduleId) {
    /******/
@@ -25,25 +25,25 @@
    /******/
    /******/ /******/ var module = (installedModules[moduleId] = {
     /******/ exports: {},
-    /******/ id     : moduleId,
-    /******/ loaded : false
+    /******/ id: moduleId,
+    /******/ loaded: false
     /******/
    }); // Execute the module function
    /******/
    /******/ /******/ modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); // Flag the module as loaded
    /******/
-   /******/ /******/ module.loaded = true;  // Return the exports of the module
+   /******/ /******/ module.loaded = true; // Return the exports of the module
    /******/
    /******/ /******/ return module.exports;
    /******/
   } // expose the modules object (__webpack_modules__)
   /******/
   /******/
-  /******/ /******/ __webpack_require__.m = modules;  // expose the module cache
+  /******/ /******/ __webpack_require__.m = modules; // expose the module cache
   /******/
-  /******/ /******/ __webpack_require__.c = installedModules;  // __webpack_public_path__
+  /******/ /******/ __webpack_require__.c = installedModules; // __webpack_public_path__
   /******/
-  /******/ /******/ __webpack_require__.p = "";  // Load entry module and return exports
+  /******/ /******/ __webpack_require__.p = ""; // Load entry module and return exports
   /******/
   /******/ /******/ return __webpack_require__(0);
   /******/
@@ -61,10 +61,10 @@
     var _createClass = (function() {
      function defineProperties(target, props) {
       for (var i = 0; i < props.length; i++) {
-       var descriptor                                  = props[i];
-           descriptor.enumerable                       = descriptor.enumerable || false;
-           descriptor.configurable                     = true;
-       if  ("value" in descriptor) descriptor.writable = true;
+       var descriptor = props[i];
+       descriptor.enumerable = descriptor.enumerable || false;
+       descriptor.configurable = true;
+       if ("value" in descriptor) descriptor.writable = true;
        Object.defineProperty(target, descriptor.key, descriptor);
       }
      }
@@ -109,9 +109,9 @@
 
      _createClass(Typed, [
       {
-       key  : "toggle",
+       key: "toggle",
        value: function toggle() {
-        this.pause.status ? this.start(): this.stop();
+        this.pause.status ? this.start() : this.stop();
        }
 
        /**
@@ -120,7 +120,7 @@
         */
       },
       {
-       key  : "stop",
+       key: "stop",
        value: function stop() {
         if (this.typingComplete) return;
         if (this.pause.status) return;
@@ -135,7 +135,7 @@
         */
       },
       {
-       key  : "start",
+       key: "start",
        value: function start() {
         if (this.typingComplete) return;
         if (!this.pause.status) return;
@@ -154,7 +154,7 @@
         */
       },
       {
-       key  : "destroy",
+       key: "destroy",
        value: function destroy() {
         this.reset(false);
         this.options.onDestroy(this);
@@ -167,7 +167,7 @@
         */
       },
       {
-       key  : "reset",
+       key: "reset",
        value: function reset() {
         var restart = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
@@ -177,9 +177,9 @@
          this.cursor.parentNode.removeChild(this.cursor);
          this.cursor = null;
         }
-        this.strPos   = 0;
+        this.strPos = 0;
         this.arrayPos = 0;
-        this.curLoop  = 0;
+        this.curLoop = 0;
         if (restart) {
          this.insertCursor();
          this.options.onReset(this);
@@ -193,7 +193,7 @@
         */
       },
       {
-       key  : "begin",
+       key: "begin",
        value: function begin() {
         var _this = this;
 
@@ -220,7 +220,7 @@
         */
       },
       {
-       key  : "typewrite",
+       key: "typewrite",
        value: function typewrite(curString, curStrPos) {
         var _this2 = this;
 
@@ -243,17 +243,17 @@
          curStrPos = _htmlParserJs.htmlParser.typeHtmlChars(curString, curStrPos, _this2);
 
          var pauseTime = 0;
-         var substr    = curString.substr(curStrPos);
+         var substr = curString.substr(curStrPos);
          // check for an escape character before a pause value
          // format: \^\d+ .. eg: ^1000 .. should be able to print the ^ too using ^^
          // single ^ are removed from string
          if (substr.charAt(0) === "^") {
           if (/^\^\d+/.test(substr)) {
-           var skip                   = 1;                      // skip at least 1
-               substr                 = /\d+/.exec(substr)[0];
-               skip                  += substr.length;
-               pauseTime              = parseInt(substr);
-               _this2.temporaryPause  = true;
+           var skip = 1; // skip at least 1
+           substr = /\d+/.exec(substr)[0];
+           skip += substr.length;
+           pauseTime = parseInt(substr);
+           _this2.temporaryPause = true;
            _this2.options.onTypingPaused(_this2.arrayPos, _this2);
            // strip out the escape character and pause value so they're not printed
            curString = curString.substring(0, curStrPos) + curString.substring(curStrPos + skip);
@@ -270,9 +270,9 @@
           }
           // strip out the escape characters and append all the string in between
           var stringBeforeSkip = curString.substring(0, curStrPos);
-          var stringSkipped    = curString.substring(stringBeforeSkip.length + 1, curStrPos + numChars);
-          var stringAfterSkip  = curString.substring(curStrPos + numChars + 1);
-              curString        = stringBeforeSkip + stringSkipped + stringAfterSkip;
+          var stringSkipped = curString.substring(stringBeforeSkip.length + 1, curStrPos + numChars);
+          var stringAfterSkip = curString.substring(curStrPos + numChars + 1);
+          curString = stringBeforeSkip + stringSkipped + stringAfterSkip;
           numChars--;
          }
 
@@ -306,7 +306,7 @@
         */
       },
       {
-       key  : "keepTyping",
+       key: "keepTyping",
        value: function keepTyping(curString, curStrPos, numChars) {
         // call before functions if applicable
         if (curStrPos === 0) {
@@ -315,8 +315,8 @@
         }
         // start typing each new char into existing string
         // curString: arg, this.el.html: original text inside element
-            curStrPos  += numChars;
-        var nextString  = curString.substr(0, curStrPos);
+        curStrPos += numChars;
+        var nextString = curString.substr(0, curStrPos);
         this.replaceText(nextString);
         // loop the function
         this.typewrite(curString, curStrPos);
@@ -330,7 +330,7 @@
         */
       },
       {
-       key  : "doneTyping",
+       key: "doneTyping",
        value: function doneTyping(curString, curStrPos) {
         var _this3 = this;
 
@@ -359,7 +359,7 @@
         */
       },
       {
-       key  : "backspace",
+       key: "backspace",
        value: function backspace(curString, curStrPos) {
         var _this4 = this;
 
@@ -420,7 +420,7 @@
         */
       },
       {
-       key  : "complete",
+       key: "complete",
        value: function complete() {
         this.options.onComplete(this);
         if (this.loop) {
@@ -439,7 +439,7 @@
         */
       },
       {
-       key  : "setPauseStatus",
+       key: "setPauseStatus",
        value: function setPauseStatus(curString, curStrPos, isTyping) {
         this.pause.typewrite = isTyping;
         this.pause.curString = curString;
@@ -453,7 +453,7 @@
         */
       },
       {
-       key  : "toggleBlinking",
+       key: "toggleBlinking",
        value: function toggleBlinking(isBlinking) {
         if (!this.cursor) return;
         // if in paused state, don't toggle blinking a 2nd time
@@ -474,7 +474,7 @@
         */
       },
       {
-       key  : "humanizer",
+       key: "humanizer",
        value: function humanizer(speed) {
         return Math.round((Math.random() * speed) / 2) + speed;
        }
@@ -485,7 +485,7 @@
         */
       },
       {
-       key  : "shuffleStringsIfNeeded",
+       key: "shuffleStringsIfNeeded",
        value: function shuffleStringsIfNeeded() {
         if (!this.shuffle) return;
         this.sequence = this.sequence.sort(function() {
@@ -499,11 +499,11 @@
         */
       },
       {
-       key  : "initFadeOut",
+       key: "initFadeOut",
        value: function initFadeOut() {
         var _this5 = this;
 
-           this.el.className                   += " " + this.fadeOutClass;
+        this.el.className += " " + this.fadeOutClass;
         if (this.cursor) this.cursor.className += " " + this.fadeOutClass;
         return setTimeout(function() {
          _this5.arrayPos++;
@@ -527,7 +527,7 @@
         */
       },
       {
-       key  : "replaceText",
+       key: "replaceText",
        value: function replaceText(str) {
         if (this.attr) {
          this.el.setAttribute(this.attr, str);
@@ -549,7 +549,7 @@
         */
       },
       {
-       key  : "bindFocusEvents",
+       key: "bindFocusEvents",
        value: function bindFocusEvents() {
         var _this6 = this;
 
@@ -571,11 +571,11 @@
         */
       },
       {
-       key  : "insertCursor",
+       key: "insertCursor",
        value: function insertCursor() {
         if (!this.showCursor) return;
         if (this.cursor) return;
-        this.cursor           = document.createElement("span");
+        this.cursor = document.createElement("span");
         this.cursor.className = "typed-cursor";
         this.cursor.innerHTML = this.cursorChar;
         this.el.parentNode && this.el.parentNode.insertBefore(this.cursor, this.el.nextSibling);
@@ -586,8 +586,8 @@
      return Typed;
     })();
 
-    exports["default"]     = Typed;
-            module.exports = exports["default"];
+    exports["default"] = Typed;
+    module.exports = exports["default"];
 
     /***/
    },
@@ -599,7 +599,7 @@
      value: true
     });
 
-    var _extends = 
+    var _extends =
      Object.assign ||
      function(target) {
       for (var i = 1; i < arguments.length; i++) {
@@ -616,10 +616,10 @@
     var _createClass = (function() {
      function defineProperties(target, props) {
       for (var i = 0; i < props.length; i++) {
-       var descriptor                                  = props[i];
-           descriptor.enumerable                       = descriptor.enumerable || false;
-           descriptor.configurable                     = true;
-       if  ("value" in descriptor) descriptor.writable = true;
+       var descriptor = props[i];
+       descriptor.enumerable = descriptor.enumerable || false;
+       descriptor.configurable = true;
+       if ("value" in descriptor) descriptor.writable = true;
        Object.defineProperty(target, descriptor.key, descriptor);
       }
      }
@@ -631,7 +631,7 @@
     })();
 
     function _interopRequireDefault(obj) {
-     return obj && obj.__esModule ? obj: { default: obj };
+     return obj && obj.__esModule ? obj : { default: obj };
     }
 
     function _classCallCheck(instance, Constructor) {
@@ -676,8 +676,8 @@
         self.options = _extends({}, _defaultsJs2["default"], options);
 
         // attribute to type into
-        self.isInput              = self.el.tagName.toLowerCase() === "input";
-        self.attr                 = self.options.attr;
+        self.isInput = self.el.tagName.toLowerCase() === "input";
+        self.attr = self.options.attr;
         self.bindInputFocusEvents = self.options.bindInputFocusEvents;
 
         // show cursor
@@ -711,7 +711,7 @@
         self.backDelay = self.options.backDelay;
 
         // Fade out instead of backspace
-        self.fadeOut      = self.options.fadeOut;
+        self.fadeOut = self.options.fadeOut;
         self.fadeOutClass = self.options.fadeOutClass;
         self.fadeOutDelay = self.options.fadeOutDelay;
 
@@ -731,10 +731,10 @@
         }
 
         if (self.stringsElement) {
-             self.strings                      = [];
-             self.stringsElement.style.display = "none";
-         var strings                           = Array.prototype.slice.apply(self.stringsElement.children);
-         var stringsLength                     = strings.length;
+         self.strings = [];
+         self.stringsElement.style.display = "none";
+         var strings = Array.prototype.slice.apply(self.stringsElement.children);
+         var stringsLength = strings.length;
 
          if (stringsLength) {
           for (var i = 0; i < stringsLength; i += 1) {
@@ -754,9 +754,9 @@
         self.stopNum = 0;
 
         // Looping logic
-        self.loop      = self.options.loop;
+        self.loop = self.options.loop;
         self.loopCount = self.options.loopCount;
-        self.curLoop   = 0;
+        self.curLoop = 0;
 
         // shuffle the strings
         self.shuffle = self.options.shuffle;
@@ -764,7 +764,7 @@
         self.sequence = [];
 
         self.pause = {
-         status   : false,
+         status: false,
          typewrite: true,
          curString: "",
          curStrPos: 0
@@ -787,7 +787,7 @@
        }
       },
       {
-       key  : "getCurrentElContent",
+       key: "getCurrentElContent",
        value: function getCurrentElContent(self) {
         var elContent = "";
         if (self.attr) {
@@ -803,7 +803,7 @@
        }
       },
       {
-       key  : "appendAnimationCss",
+       key: "appendAnimationCss",
        value: function appendAnimationCss(self) {
         var cssDataName = "data-typed-js-css";
         if (!self.autoInsertCss) {
@@ -816,17 +816,17 @@
          return;
         }
 
-        var css      = document.createElement("style");
-            css.type = "text/css";
+        var css = document.createElement("style");
+        css.type = "text/css";
         css.setAttribute(cssDataName, true);
 
         var innerCss = "";
         if (self.showCursor) {
-         innerCss += 
+         innerCss +=
           "\n        .typed-cursor{\n          opacity: 1;\n        }\n        .typed-cursor.typed-cursor--blink{\n          animation: typedjsBlink 0.7s infinite;\n          -webkit-animation: typedjsBlink 0.7s infinite;\n                  animation: typedjsBlink 0.7s infinite;\n        }\n        @keyframes typedjsBlink{\n          50% { opacity: 0.0; }\n        }\n        @-webkit-keyframes typedjsBlink{\n          0% { opacity: 1; }\n          50% { opacity: 0.0; }\n          100% { opacity: 1; }\n        }\n      ";
         }
         if (self.fadeOut) {
-         innerCss += 
+         innerCss +=
           "\n        .typed-fade-out{\n          opacity: 0;\n          transition: opacity .25s;\n        }\n        .typed-cursor.typed-cursor--blink.typed-fade-out{\n          -webkit-animation: 0;\n          animation: 0;\n        }\n      ";
         }
         if (css.length === 0) {
@@ -841,9 +841,9 @@
      return Initializer;
     })();
 
-    exports["default"]          = Initializer;
-    var     initializer         = new Initializer();
-            exports.initializer = initializer;
+    exports["default"] = Initializer;
+    var initializer = new Initializer();
+    exports.initializer = initializer;
 
     /***/
    },
@@ -908,7 +908,7 @@
       * @property {string} fadeOutClass css class for fade animation
       * @property {boolean} fadeOutDelay Fade out delay in milliseconds
       */
-     fadeOut     : false,
+     fadeOut: false,
      fadeOutClass: "typed-fade-out",
      fadeOutDelay: 500,
 
@@ -916,7 +916,7 @@
       * @property {boolean} loop loop strings
       * @property {number} loopCount amount of loops
       */
-     loop     : false,
+     loop: false,
      loopCount: Infinity,
 
      /**
@@ -924,8 +924,8 @@
       * @property {string} cursorChar character for cursor
       * @property {boolean} autoInsertCss insert CSS for cursor and fadeOut into HTML <head>
       */
-     showCursor   : true,
-     cursorChar   : "|",
+     showCursor: true,
+     cursorChar: "|",
      autoInsertCss: true,
 
      /**
@@ -1011,8 +1011,8 @@
      onDestroy: function onDestroy(self) {}
     };
 
-    exports["default"]     = defaults;
-            module.exports = exports["default"];
+    exports["default"] = defaults;
+    module.exports = exports["default"];
 
     /***/
    },
@@ -1032,10 +1032,10 @@
     var _createClass = (function() {
      function defineProperties(target, props) {
       for (var i = 0; i < props.length; i++) {
-       var descriptor                                  = props[i];
-           descriptor.enumerable                       = descriptor.enumerable || false;
-           descriptor.configurable                     = true;
-       if  ("value" in descriptor) descriptor.writable = true;
+       var descriptor = props[i];
+       descriptor.enumerable = descriptor.enumerable || false;
+       descriptor.configurable = true;
+       if ("value" in descriptor) descriptor.writable = true;
        Object.defineProperty(target, descriptor.key, descriptor);
       }
      }
@@ -1101,7 +1101,7 @@
         */
       },
       {
-       key  : "backSpaceHtmlChars",
+       key: "backSpaceHtmlChars",
        value: function backSpaceHtmlChars(curString, curStrPos, self) {
         if (self.contentType !== "html") return curStrPos;
         var curChar = curString.substr(curStrPos).charAt(0);
@@ -1128,9 +1128,9 @@
      return HTMLParser;
     })();
 
-    exports["default"]         = HTMLParser;
-    var     htmlParser         = new HTMLParser();
-            exports.htmlParser = htmlParser;
+    exports["default"] = HTMLParser;
+    var htmlParser = new HTMLParser();
+    exports.htmlParser = htmlParser;
 
     /***/
    }

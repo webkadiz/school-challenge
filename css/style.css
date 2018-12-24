@@ -27,6 +27,31 @@ body {
  font-family: "Bender", serif;
 }
 
+.cursor--blink {
+ position: relative;
+}
+.cursor--blink:after {
+ content: "|";
+ position: absolute;
+ right: -4px;
+ height: 100%;
+ width: 2px;
+ animation: blink 0.7s infinite;
+ transform: translateY(-5%);
+}
+
+@keyframes blink {
+ 0% {
+  opacity: 1;
+ }
+ 50% {
+  opacity: 0;
+ }
+ 100% {
+  opacity: 1;
+ }
+}
+
 .bg {
  background: var(--bg-color);
  position: absolute;
@@ -45,6 +70,11 @@ body {
  left: 0;
  top: 0;
  pointer-events: none;
+}
+
+.char__highlight {
+ background: var(--text-color);
+ color: var(--bg-color);
 }
 
 .wrapper,
@@ -86,6 +116,10 @@ body {
 }
 
 .win {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
  position: absolute;
  left: 0;
  top: 0;
@@ -95,9 +129,17 @@ body {
  pointer-events: none;
 }
 
+.win__container {
+ height: 50vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+}
+
 .win__left,
 .win__right {
  transition: 2s;
+ transition-delay: 2s;
  position: absolute;
  width: 50%;
  background: var(--bg-color);
@@ -124,6 +166,22 @@ body {
  right: 0;
 }
 
+.win__title,
+.win__code {
+ text-align: center;
+ position: relative;
+ font-size: 5rem;
+ text-shadow: 0 0 10px var(--text-shadow);
+ text-transform: uppercase;
+}
+
+.win__code {
+ font-size: 8rem;
+ font-weight: 700;
+ align-self: center;
+ margin-top: 10vh;
+}
+
 .hacker__video {
  position: absolute;
  width: 100%;
@@ -141,12 +199,6 @@ body {
 
 .canvas-container {
  position: absolute !important;
-}
-
-.typed-cursor {
- background: var(--text-color);
- width: 10px;
- height: 10px;
 }
 
 .m4 {

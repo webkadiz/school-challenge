@@ -199,9 +199,10 @@ class Data {
    $(".attempt--wrapper").append('<div class="attempt"></div>');
   }
  }
- updateAttempts(win) {
-  if (win) {
+ updateAttempts(word) {
+  if (!word) {
    this.initAttempts(this.attempts - $(".attempt").length);
+   return;
   } else {
    $(".attempt:last").remove();
   }
@@ -209,12 +210,46 @@ class Data {
    this.enterTerminal("Блокировка экрана&nbsp;.&nbsp;.&nbsp;.");
    $(".wrapper").after('<div class="block-event"></div>');
    $(".map__enter-wrapper:last").remove();
-   setTimeout(() => {
-    this.lose();
-   }, 2000);
+   setTimeout(() => this.lose(), 2000);
    return;
   }
-  this.enterTerminal("Неверный пароль");
+
+  let html = $('<div><div class="terminal__word"></div></div>');
+  let pass = this.password;
+  let matchCount = 0;
+  let matchEndings = [
+   "ий",
+   "ие",
+   "ия",
+   "ия",
+   "ия",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий",
+   "ий"
+  ];
+  let matchEnding = "",
+   matchStr = "";
+  for (let char of word) {
+   if (~pass.indexOf(char)) {
+    pass = pass.replace(char, "");
+    $(".terminal__word", html).append(`<span class="char__highlight">${char}</span>`);
+    matchCount++;
+   } else {
+    $(".terminal__word", html).append(`<span>${char}</span>`);
+   }
+  }
+
+  matchEnding = matchCount > 14 ? matchEndings[matchCount % 10] : matchEndings[matchCount];
+  matchStr = `${matchCount} совпаден${matchEnding}`;
+  html.prepend(matchStr);
+  this.enterTerminal(html);
  }
  clickEvent() {
   $(".map__char").click(e => {
@@ -230,7 +265,7 @@ class Data {
      this.enterTerminal("Выполняется вход&nbsp;.&nbsp;.&nbsp;.");
      this.win();
     } else {
-     this.updateAttempts(0);
+     this.updateAttempts(el.textContent.trim().toLowerCase());
      this.nonExclude.push(el.textContent.trim().toLowerCase());
     }
    }
@@ -239,7 +274,7 @@ class Data {
     let rand = Math.random() - 0.5;
 
     if (rand <= 0) {
-     this.updateAttempts(1);
+     this.updateAttempts();
      this.enterTerminal("Жизни восстановлены");
     } else {
      let randWord = this.wordsInGame[~~(Math.random() * this.wordsInGame.length)];
@@ -276,6 +311,26 @@ class Data {
   $(".wrapper").after('<div class="block-event"></div>');
   $(".map__enter-wrapper:last").remove();
   $(".win").addClass("win__active");
+  new Typed(".win__title", {
+   strings: ["твое кодовое слово"],
+   typeSpeed: 200,
+   startDelay: 9000,
+   showCursor: false,
+   preStringTyped: (arrayPos, self) => $(self.el).addClass("cursor--blink"),
+   onComplete: () => {
+    new Typed(".win__code", {
+     strings: ["раз"],
+     typeSpeed: 1000,
+     startDelay: 1000,
+     showCursor: false,
+     preStringTyped: (arrayPos, self) => $(self.el).addClass("cursor--blink"),
+     onComplete: () => {
+      $(".win__title").addClass("win__title--glitch");
+      $(".win__code").addClass("win__code--glitch");
+     }
+    });
+   }
+  });
  }
  lose() {
   $("body").addClass("lose");
@@ -316,16 +371,18 @@ class Start {
   });
  }
  numbers() {
-  let text = new fabric.IText("START", {
+  this.startText = new fabric.IText("START", {
    globalCompositeOperation: "destination-out",
    stroke: "green",
    fontSize: 300,
    fontFamily: this.font,
    charSpacing: 500,
-   fontWeight: this.fontWeight
+   fontWeight: this.fontWeight,
+   originX: "center",
+   originY: "center"
   });
-  this.canvas.add(text);
-  text.center();
+  this.canvas.add(this.startText);
+  this.startText.center();
 
   for (let i of range(100)) {
    let left = ~~(Math.random() * document.documentElement.clientWidth);
@@ -337,21 +394,26 @@ class Start {
     fontFamily: this.font,
     left,
     top,
-    type: "digit"
+    type: "digit",
+    originX: "center",
+    originY: "center"
    });
-   digit.dirX = (Math.random() * 2 - 1) * this.speed;
-   digit.dirY = (Math.random() * 2 - 1) * this.speed;
+   digit.dirX = (Math.random() * 2 - 1) * random(15);
+   digit.dirY = (Math.random() * 2 - 1) * random(15);
+   digit.dirRot = (Math.random() * 2 - 1) * random(20);
    this.canvas.add(digit);
   }
   this.anim();
  }
  anim() {
   let anim = () => {
+   if (this.game) return;
    this.canvas.forEachObject(el => {
     if (el.type === "digit") {
      el.set({
       left: el.left + el.dirX,
-      top: el.top + el.dirY
+      top: el.top + el.dirY,
+      angle: el.angle + el.dirRot
      });
 
      if (el.left > this.docWidth) {
@@ -376,13 +438,32 @@ class Start {
  }
  startGame() {
   this.canvas.on("mouse:up", e => {
-   let data = new Data();
-   $("body").addClass("game");
-   data.initAttempts(data.attempts);
-   data.initMap();
-   data.highlightHint();
-   data.clickEvent();
-   data.audioMap();
+   fabric.util.animate({
+    startValue: this.startText.fontSize,
+    endValue: this.startText.fontSize + 1000,
+    duration: 8000,
+    // linear movement
+    easing: (t, b, c, d) => (c * t) / d + b,
+    onChange: fontSize => {
+     //  let charSpacing = this.startText.charSpacing - fontSize / 100;
+     //  if (charSpacing > -100) this.startText.set({ charSpacing });
+     this.startText.set({ fontSize });
+
+     this.canvas.requestRenderAll();
+    }
+    // onComplete: animate
+   });
+   setTimeout(() => {
+    this.game = true;
+
+    let data = new Data();
+    $("body").addClass("game");
+    data.initAttempts(data.attempts);
+    data.initMap();
+    data.highlightHint();
+    data.clickEvent();
+    data.audioMap();
+   }, 2000);
   });
  }
 }

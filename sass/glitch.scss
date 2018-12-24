@@ -1,0 +1,115 @@
+@mixin textGlitch(
+ $name,
+ $intensity,
+ $textColor,
+ $background,
+ $highlightColor1,
+ $highlightColor2,
+ $width,
+ $height
+) {
+ color: $textColor;
+ position: relative;
+ $steps: $intensity;
+ // Ensure the @keyframes are generated at the root level
+ @at-root {
+  // We need two different ones
+  @for $i from 1 through 2 {
+   @keyframes #{$name}-anim-#{$i} {
+    @for $i from 0 through $steps {
+     #{percentage($i*(1/$steps))} {
+      clip: rect(random($height) + px, $width + px, random($height) + px, 0);
+     }
+    }
+   }
+  }
+ }
+ &:before,
+ &:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: $background;
+  clip: rect(0, 0, 0, 0);
+ }
+ &:after {
+  left: 2px;
+  text-shadow: -1px 0 $highlightColor1;
+  animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+ }
+ &:before {
+  left: -2px;
+  text-shadow: 2px 0 $highlightColor2;
+  animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+ }
+}
+@mixin imgGlitch($name, $intensity, $width, $height, $top, $left) {
+ $steps: $intensity;
+ // Ensure the @keyframes are generated at the root level
+ @at-root {
+  // We need two different ones
+  @for $i from 1 through 2 {
+   @keyframes #{$name}-anim-#{$i} {
+    @for $i from 0 through $steps {
+     #{percentage($i*(1/$steps))} {
+      clip: rect(random($height) + px, $width + px, random($height) + px, 0);
+     }
+    }
+   }
+  }
+ }
+ > .win__img {
+  position: absolute;
+  top: $top + px;
+  left: $left + px;
+ }
+ > .win__img:nth-child(2),
+ > .win__img:nth-child(3) {
+  clip: rect(0, 0, 0, 0);
+ }
+ > .win__img:nth-child(2) {
+  left: ($left + 2) + px;
+  animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+ }
+ > .win__img:nth-child(3) {
+  left: ($left - 2) + px;
+  animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+ }
+}
+.win__glitch {
+ @include imgGlitch("glitch-img", 500, 4000, 1000, 0, 0);
+}
+.win__glitch,
+.win__img {
+ position: absolute;
+ left: 0;
+ top: 0;
+ width: 100%;
+ height: 100%;
+}
+.win__glitch {
+ opacity: 0;
+ transition: 4s;
+ transition-delay: 6s;
+}
+.win__img {
+ background: url("../assets/deadmouse.jpg");
+ background-size: cover;
+}
+.win__img:nth-child(2) {
+ // filter: hue-rotate(112deg);
+}
+.win__img:nth-child(3) {
+ // filter: hue-rotate(224deg);
+}
+.win__active .win__glitch {
+ opacity: 1;
+}
+.win__title--glitch {
+ @include textGlitch("win-title", 17, var(--text-color), transparent, red, blue, 600, 115);
+}
+.win__code--glitch {
+ @include textGlitch("win-code", 17, var(--text-color), transparent, red, blue, 450, 115);
+}
