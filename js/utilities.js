@@ -26,7 +26,7 @@ function* range(amount, start = 0) {
  }
 }
 
-function mixArr(arr) {
+function shuffle(arr) {
  arr.sort((a, b) => {
   return Math.random() - 0.5;
  });

@@ -1,7 +1,9 @@
-class Data {
+class Game {
  constructor(gameNumber) {
-   this.gameNumber = gameNumber
-   this.keyWords= ['раз', 'уж', 'начал', 'побеждай']
+  this.charLengthAVG = 16;
+  this.mapLineHeight = 1.1;
+  this.gameNumber = gameNumber;
+  this.keyWords = ["раз", "уж", "начал", "побеждай"];
   this.attempts = 4;
   this.rows = 14;
   this.columns = 2;
@@ -45,41 +47,100 @@ class Data {
     "лыжи",
     "снежок",
     "ночь",
-    "часы",
-    "бумажка",
-    "интерес",
-    "порт",
-    "ромка",
-    "водка",
-    "столик",
-    "вантик",
-    "бантик",
-    "кукла",
-    "ваза",
-    "взяла",
-    "забрала",
+    "часы"
+   ],
+   [
+    "огонёк",
+    "звёзды",
+    "сияние",
+    "ягель",
+    "вьюга",
+    "клюка",
+    "пурга",
+    "пирог",
+    "мишура",
+    "пороша",
+    "кафтан",
+    "штоф",
+    "глыба",
+    "блюдо",
+    "танцы",
+    "солнце",
+    "отдых",
+    "хутор"
+   ],
+   [
+    "игрушки",
+    "шоколад",
+    "куржак",
+    "кружева",
+    "бубенцы",
+    "сугроб",
+    "закуска",
+    "музыка",
+    "конфетти",
+    "конфеты",
+    "гололёд",
+    "огонёк",
+    "хоровод",
+    "хлопья",
+    "метель",
+    "письмо"
+   ],
+   [
     "снеговик",
-    "кукуруза",
-    "ураган",
-    "зима",
-    "лето",
-    "осень",
-    " весна"
+    "снегоход",
+    "чародей",
+    "вечеринка",
+    "полынья",
+    "январь",
+    "традиции",
+    "гостинцы",
+    "скоморох",
+    "бахрома",
+    "коктейль",
+    "каникулы",
+    "украшения",
+    "волшебство",
+    "снежинка",
+    "варежки",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
    ]
   ];
  }
  initMap() {
+  this.mapHeight =
+   $(".wrapper").height() - $(".greeting").outerHeight(true) + $(".attempt--wrapper").outerHeight(true);
+
+  console.log(this.mapHeight);
+  let el = $("<div>0x8540</div>");
+  $(".map").append(el);
+  this.rowHeight = el.height();
+  console.log(this.rowHeight);
+  el.remove();
+
+  this.rows = ~~(this.mapHeight / (this.rowHeight * this.mapLineHeight));
+ }
+ createMap() {
   this.indexWord = 0;
   this.indexHint;
   this.countHex = 0;
   this.randHex = ~~(Math.random() * 65536);
-  this.countWords = ~~((this.rowLength * this.rows) / 60);
+  this.countWords =
+   ~~((this.rowLength * this.rows) / 60) % 2 == 1
+    ? ~~((this.rowLength * this.rows) / 60) + 1
+    : ~~((this.rowLength * this.rows) / 60);
   this.offsetWord = ~~((this.rowLength * this.rows * this.columns) / this.countWords);
   this.posWord = ~~(Math.random() * this.offsetWord);
   this.countHint = ~~(this.countWords / 2);
   this.offsetHint = ~~((this.rowLength * this.rows * this.columns) / this.countHint);
   this.posHint = ~~(Math.random() * this.offsetHint);
-  this.wordsInGame = mixArr(this.words[this.gameNumber].slice(0, this.countWords));
+  this.wordsInGame = shuffle(this.words[this.gameNumber].slice(0, this.countWords));
   this.password = this.wordsInGame[~~(Math.random() * this.wordsInGame.length)];
   this.nonExclude = [this.password];
 
@@ -88,11 +149,11 @@ class Data {
   for (let column of range(this.columns)) {
    $(".map").append(`<div class="map__column">
       <div class="map__decor"></div>
-      <div class="map__filed"></div>
+      <div class="map__field"></div>
       </div>`);
 
    for (let row of range(this.rows)) {
-    (this.field = $(".map__filed:last")[0]), (this.decor = $(".map__decor:last"));
+    (this.field = $(".map__field:last")[0]), (this.decor = $(".map__decor:last"));
 
     this.fillMap(row, column);
 
@@ -314,16 +375,20 @@ class Data {
   $(".wrapper").after('<div class="block-event"></div>');
   $(".map__enter-wrapper:last").remove();
   $(".win").addClass("win__active");
+  $(".win__code").attr("data-text", this.keyWords[this.gameNumber]);
   new Typed(".win__title", {
    strings: ["твое кодовое слово"],
-   typeSpeed: 200,
+   typeSpeed: 170,
    startDelay: 9000,
    showCursor: false,
+   onLastStringBackspaced: () => {
+    console.log("typed");
+   },
    preStringTyped: (arrayPos, self) => $(self.el).addClass("cursor--blink"),
    onComplete: () => {
     new Typed(".win__code", {
-     strings: this.keyWords[this.gameNumber],
-     typeSpeed: 1000,
+     strings: [this.keyWords[this.gameNumber]],
+     typeSpeed: 800,
      startDelay: 1000,
      showCursor: false,
      preStringTyped: (arrayPos, self) => $(self.el).addClass("cursor--blink"),
@@ -347,130 +412,6 @@ class Data {
  }
 }
 
-class Start {
- constructor() {
-  console.log(fabric);
-  this.font = "Bender";
-  this.fontWeight = 900;
-  this.speed = 5;
-  this.doc = document.documentElement;
-  this.docWidth = document.documentElement.clientWidth;
-  this.docHeight = document.documentElement.clientHeight;
- }
-
- run() {
-  this.canvas = new fabric.Canvas(document.getElementById("start"), {
-   width: this.docWidth,
-   height: this.docHeight,
-   backgroundColor: "#020102"
-  });
- }
- loadFont() {
-  fontSpy(this.font, {
-   success: () => this.numbers(),
-   failure: () => console.log(false),
-   timeOut: 3000,
-   fontWeight: this.fontWeight
-  });
- }
- numbers() {
-  this.startText = new fabric.IText("START", {
-   globalCompositeOperation: "destination-out",
-   stroke: "green",
-   fontSize: 300,
-   fontFamily: this.font,
-   charSpacing: 500,
-   fontWeight: this.fontWeight,
-   originX: "center",
-   originY: "center"
-  });
-  this.canvas.add(this.startText);
-  this.startText.center();
-
-  for (let i of range(100)) {
-   let left = ~~(Math.random() * document.documentElement.clientWidth);
-   let top = ~~(Math.random() * document.documentElement.clientHeight);
-   let digitText = Math.random() - 0.5 < 0 ? "0" : "1";
-   let digit = new fabric.IText(digitText, {
-    fill: "#13b40d",
-    shadow: "0 0 10px #1adf12",
-    fontFamily: this.font,
-    left,
-    top,
-    type: "digit",
-    originX: "center",
-    originY: "center"
-   });
-   digit.dirX = (Math.random() * 2 - 1) * random(15);
-   digit.dirY = (Math.random() * 2 - 1) * random(15);
-   digit.dirRot = (Math.random() * 2 - 1) * random(20);
-   this.canvas.add(digit);
-  }
-  this.anim();
- }
- anim() {
-  let anim = () => {
-   if (this.game) return;
-   this.canvas.forEachObject(el => {
-    if (el.type === "digit") {
-     el.set({
-      left: el.left + el.dirX,
-      top: el.top + el.dirY,
-      angle: el.angle + el.dirRot
-     });
-
-     if (el.left > this.docWidth) {
-      el.left = 0 - el.width;
-     }
-     if (el.left + el.width < 0) {
-      el.left = this.docWidth;
-     }
-     if (el.top > this.docHeight) {
-      el.top = 0 - el.height;
-     }
-
-     if (el.top + el.height < 0) {
-      el.top = this.docHeight;
-     }
-     this.canvas.requestRenderAll();
-    }
-   });
-   window.requestAnimationFrame(anim);
-  };
-  anim();
- }
- startGame() {
-  this.canvas.on("mouse:up", e => {
-   fabric.util.animate({
-    startValue: this.startText.fontSize,
-    endValue: this.startText.fontSize + 1000,
-    duration: 8000,
-    // linear movement
-    easing: (t, b, c, d) => (c * t) / d + b,
-    onChange: fontSize => {
-     //  let charSpacing = this.startText.charSpacing - fontSize / 100;
-     //  if (charSpacing > -100) this.startText.set({ charSpacing });
-     this.startText.set({ fontSize });
-
-     this.canvas.requestRenderAll();
-    }
-    // onComplete: animate
-   });
-   setTimeout(() => {
-    this.game = true;
-
-    let data = new Data();
-    $("body").addClass("game");
-    data.initAttempts(data.attempts);
-    data.initMap();
-    data.highlightHint();
-    data.clickEvent();
-    data.audioMap();
-   }, 2000);
-  });
- }
-}
-
 $(document).ready(function() {
  //  let data = new Data();
  //  data.initAttempts(data.attempts);
@@ -479,25 +420,33 @@ $(document).ready(function() {
  //  data.clickEvent();
  //  data.audioMap();
 
- $('.start').click(() => {
-  $('.start').css('animation', 'none');
-  $('.start').css('opacity', 0)
-  $('.start').css('pointer-events', 'none')
+ $(".start").click(() => {
+  $(".start").css("animation", "none");
+  $(".start").css("opacity", 0);
+  $(".start").css("pointer-events", "none");
 
-  document.documentElement.requestFullscreen();
-   
-  let data = new Data(0);
-  $("body").addClass("game");
-  data.initAttempts(data.attempts);
-  data.initMap();
-  data.highlightHint();
-  data.clickEvent();
-  data.audioMap();
+  if (document.documentElement.requestFullScreen) {
+   document.documentElement.requestFullScreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+   document.documentElement.mozRequestFullScreen();
+  } else if (document.documentElement.webkitRequestFullScreen) {
+   document.documentElement.webkitRequestFullScreen();
+  }
+
+  setTimeout(() => {
+   let game = new Game(3);
+   $("body").addClass("game");
+   game.initMap();
+   game.initAttempts(game.attempts);
+   game.createMap();
+   game.highlightHint();
+   game.clickEvent();
+   game.audioMap();
 
    setTimeout(() => {
-    $('.left').removeClass('open')
-    $('.right').removeClass('open')
-   },2000)
- })
- 
+    $(".left").removeClass("open");
+    $(".right").removeClass("open");
+   }, 1000);
+  }, 1000);
+ });
 });
