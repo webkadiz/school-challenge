@@ -27,6 +27,46 @@ body {
  font-family: "Bender", serif;
 }
 
+.start{
+  transition: opacity 1.5s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  animation: blink 1.5s infinite;
+  font-size: 5rem;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left, .right {
+position: absolute;
+top: 0;
+height: 100%;
+width: 50%;
+background: var(--bg-color);
+transition: 2s;
+}
+
+.left {
+  left: -50%;
+}
+.right {
+  right: -50%;
+}
+
+.left.open {
+  left: 0;
+}
+
+.right.open {
+  right: 0;
+}
+
 .cursor--blink {
  position: relative;
 }
@@ -57,7 +97,9 @@ body {
  position: absolute;
  height: 100%;
  width: 100%;
- display: none;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 .bg-crt {

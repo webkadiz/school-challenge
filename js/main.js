@@ -1,6 +1,8 @@
 class Data {
- constructor() {
-  this.attempts = 10;
+ constructor(gameNumber) {
+   this.gameNumber = gameNumber
+   this.keyWords= ['раз', 'уж', 'начал', 'побеждай']
+  this.attempts = 4;
   this.rows = 14;
   this.columns = 2;
   this.rowLength = 30;
@@ -30,19 +32,20 @@ class Data {
   ];
   this.words = [
    [
-    "пират",
-    "сигара",
-    "человек",
-    "комната",
-    "оплата",
-    "лицензия",
-    "акация",
-    "собака",
-    "кукушка",
-    "макушка",
-    "парта",
-    "сапог",
-    "перчатка",
+    "ёлка",
+    "лёд",
+    "снег",
+    "огни",
+    "мороз",
+    "узоры",
+    "холод",
+    "хвоя",
+    "шуба",
+    "шар",
+    "лыжи",
+    "снежок",
+    "ночь",
+    "часы",
     "бумажка",
     "интерес",
     "порт",
@@ -76,7 +79,7 @@ class Data {
   this.countHint = ~~(this.countWords / 2);
   this.offsetHint = ~~((this.rowLength * this.rows * this.columns) / this.countHint);
   this.posHint = ~~(Math.random() * this.offsetHint);
-  this.wordsInGame = mixArr(this.words[0].slice(0, this.countWords));
+  this.wordsInGame = mixArr(this.words[this.gameNumber].slice(0, this.countWords));
   this.password = this.wordsInGame[~~(Math.random() * this.wordsInGame.length)];
   this.nonExclude = [this.password];
 
@@ -319,7 +322,7 @@ class Data {
    preStringTyped: (arrayPos, self) => $(self.el).addClass("cursor--blink"),
    onComplete: () => {
     new Typed(".win__code", {
-     strings: ["раз"],
+     strings: this.keyWords[this.gameNumber],
      typeSpeed: 1000,
      startDelay: 1000,
      showCursor: false,
@@ -476,18 +479,25 @@ $(document).ready(function() {
  //  data.clickEvent();
  //  data.audioMap();
 
- let start = new Start();
- start.run();
- start.loadFont();
- start.startGame();
- document.querySelector(".hacker__video").addEventListener(
-  "canplay",
-  function(e) {
-   console.log("video");
-   this.volume = 0.4;
-   this.currentTime = 10;
-   this.play();
-  },
-  false
- );
+ $('.start').click(() => {
+  $('.start').css('animation', 'none');
+  $('.start').css('opacity', 0)
+  $('.start').css('pointer-events', 'none')
+
+  document.documentElement.requestFullscreen();
+   
+  let data = new Data(0);
+  $("body").addClass("game");
+  data.initAttempts(data.attempts);
+  data.initMap();
+  data.highlightHint();
+  data.clickEvent();
+  data.audioMap();
+
+   setTimeout(() => {
+    $('.left').removeClass('open')
+    $('.right').removeClass('open')
+   },2000)
+ })
+ 
 });

@@ -113,3 +113,7 @@
 .win__code--glitch {
  @include textGlitch("win-code", 17, var(--text-color), transparent, red, blue, 450, 115);
 }
+
+.start__text {
+  @include textGlitch("start", 17, white, transparent, red, blue, 450, 115);
+}
