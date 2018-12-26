@@ -1,6 +1,6 @@
 class Game {
  constructor(gameNumber) {
-  this.charLengthAVG = 16;
+  this.charLengthAVG = 18;
   this.mapLineHeight = 1.1;
   this.gameNumber = gameNumber;
   this.keyWords = ["раз", "уж", "начал", "побеждай"];
@@ -118,13 +118,21 @@ class Game {
    $(".wrapper").height() - $(".greeting").outerHeight(true) + $(".attempt--wrapper").outerHeight(true);
 
   console.log(this.mapHeight);
-  let el = $("<div>0x8540</div>");
+  let el = $(`<div class="map__column">
+  <div class="map__decor"><div>0x8540</div></div>
+  <div class="map__field"></div>
+  </div>`);
   $(".map").append(el);
   this.rowHeight = el.height();
-  console.log(this.rowHeight);
+  this.rowWidth = $('.map__column').width() - $('.map__decor').outerWidth(true);
+  console.log(this.rowHeight, this.rowWidth);
   el.remove();
 
   this.rows = ~~(this.mapHeight / (this.rowHeight * this.mapLineHeight));
+
+  this.rowLength = ~~(this.rowWidth / this.charLengthAVG)
+  console.log(this.rowLength, 'rowLength');
+  
  }
  createMap() {
   this.indexWord = 0;
@@ -163,6 +171,21 @@ class Game {
     this.decor.append(`<div>${"0x" + (this.randHex + this.countHex).toString(16).toUpperCase()}</div>`);
    }
   }
+ 
+  this.mapHeight = $('.map').height()
+
+  while ($('.map__field:first').height() <  this.mapHeight  + 1) {
+    let randChar = this.chars[~~(Math.random() * this.chars.length)];
+    $('.map__field:first').append(`<span class="map__char">${randChar} </span>`);
+  }
+  $('.map__field:first .map__char:last').remove()
+
+  while ($('.map__field:last').height() <  this.mapHeight  + 1) {
+    let randChar = this.chars[~~(Math.random() * this.chars.length)];
+    $('.map__field:last').append(`<span class="map__char">${randChar} </span>`);
+  }
+  $('.map__field:last .map__char:last').remove()
+
 
   $(".map").append('<div class="map__terminal"></div>');
   $(".map__terminal").append(
@@ -425,16 +448,16 @@ $(document).ready(function() {
   $(".start").css("opacity", 0);
   $(".start").css("pointer-events", "none");
 
-  if (document.documentElement.requestFullScreen) {
-   document.documentElement.requestFullScreen();
-  } else if (document.documentElement.mozRequestFullScreen) {
-   document.documentElement.mozRequestFullScreen();
-  } else if (document.documentElement.webkitRequestFullScreen) {
-   document.documentElement.webkitRequestFullScreen();
-  }
+  // if (document.documentElement.requestFullScreen) {
+  //  document.documentElement.requestFullScreen();
+  // } else if (document.documentElement.mozRequestFullScreen) {
+  //  document.documentElement.mozRequestFullScreen();
+  // } else if (document.documentElement.webkitRequestFullScreen) {
+  //  document.documentElement.webkitRequestFullScreen();
+  // }
 
   setTimeout(() => {
-   let game = new Game(3);
+   let game = new Game(2);
    $("body").addClass("game");
    game.initMap();
    game.initAttempts(game.attempts);

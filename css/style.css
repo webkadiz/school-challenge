@@ -302,6 +302,7 @@ body {
 
 .map__field {
  text-align: justify;
+ height: max-content;
 }
 
 .map__char {
